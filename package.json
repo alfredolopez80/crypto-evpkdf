@@ -1,0 +1,24 @@
+{
+  "name": "crypto-evpkdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "start:ts": "ts-node src/index.ts",
+    "test": "jest --watch",
+    "start": "npm run build:live",
+    "generate:whitelist": "node generateWhitelist.js",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
+    "deploy": "tsc && sh ./docker-build.sh $npm_package_version"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^10.5.5",
+    "nodemon": "^1.18.3",
+    "ts-jest": "^23.0.1",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {}
+}
