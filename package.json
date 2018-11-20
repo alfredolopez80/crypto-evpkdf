@@ -7,9 +7,7 @@
     "start:ts": "ts-node src/index.ts",
     "test": "jest --watch",
     "start": "npm run build:live",
-    "generate:whitelist": "node generateWhitelist.js",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
-    "deploy": "tsc && sh ./docker-build.sh $npm_package_version"
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
   "author": "",
   "license": "ISC",
