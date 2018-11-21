@@ -1,6 +1,6 @@
+// tslint:disable:no-bitwise
 import { WordArray } from './WordArray'
 
-// From https://github.com/brix/crypto-js/blob/89ce2460ab1a10cdd0cefb686966414ce6a2ee6e/src/core.js
 /**
  * Hex encoding strategy.
  */
@@ -14,25 +14,17 @@ export class Hex {
      *
      * @static
      *
-     * @example
-     *
-     *     var hexString = CryptoJS.enc.Hex.stringify(wordArray);
      */
-    public stringify(wordArray) {
+    public static stringify(wordArray) {
         // Shortcuts
         let words = wordArray.words
         let sigBytes = wordArray.sigBytes
 
         // Convert
         let hexChars = []
-        for (let i = 0; i < sigBytes; i++) {
-            // tslint:disable-next-line:no-bitwise
+        for (let i = 0; i < sigBytes; i++) {            
             let bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff
-            // @ts-ignore
-            // tslint:disable-next-line:no-bitwise
             hexChars.push((bite >>> 4).toString(16))
-            // @ts-ignore
-            // tslint:disable-next-line:no-bitwise
             hexChars.push((bite & 0x0f).toString(16))
         }
 
@@ -48,19 +40,14 @@ export class Hex {
      *
      * @static
      *
-     * @example
-     *
-     *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
      */
-    public parse(hexStr) {
+    public  static parse(hexStr) {
         // Shortcut
         let hexStrLength = hexStr.length
 
         // Convert
         let words = []
         for (let i = 0; i < hexStrLength; i += 2) {
-            // @ts-ignore
-            // tslint:disable:no-bitwise
             words[i >>> 3] =
                 parseInt(hexStr.substr(i, 2), 16) << (24 - (i % 8) * 4)
         }

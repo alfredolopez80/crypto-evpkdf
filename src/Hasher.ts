@@ -41,7 +41,7 @@ export class Hasher {
         this.reset.call(this)
 
         // Perform concrete-hasher logic
-        this.md5._doReset()
+        this.md5.doReset()
     }
 
     /**
@@ -58,10 +58,10 @@ export class Hasher {
      */
     public update(messageUpdate) {
         // Append
-        this.buffer._append(messageUpdate)
+        this.buffer.append(messageUpdate)
 
         // Update the hash
-        this.buffer._process(false, this.md5._doProcessBlock)
+        this.buffer.process(false, this.md5.doProcessBlock)
 
         // Chainable
         return this
@@ -84,11 +84,11 @@ export class Hasher {
     public finalize(messageUpdate) {
         // Final message update
         if (messageUpdate) {
-            this.buffer._append(messageUpdate)
+            this.buffer.append(messageUpdate)
         }
 
         // Perform concrete-hasher logic
-        const hash = this.md5._doFinalize()
+        const hash = this.md5.doFinalize()
 
         return hash
     }
@@ -130,14 +130,4 @@ export class Hasher {
     //         return new C_algo.HMAC.init(hasher, key).finalize(message)
     //     }
     // }
-}
-
-export const HasherMixiin = applyMixins(Hasher, [MD5, BufferedBlockAlgorithm])
-
-function applyMixins(derivedCtor: any, baseCtors: any[]) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            derivedCtor.prototype[name] = baseCtor.prototype[name]
-        })
-    })
 }

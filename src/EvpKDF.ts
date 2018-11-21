@@ -2,7 +2,6 @@ import { WordArray } from './WordArray'
 import { Hasher } from './Hasher'
 import { BufferedBlockAlgorithm } from './BufferedBlockAlgorithm'
 
-const md5 = require('blueimp-md5')
 export interface IEvpKDFConfig {
     keySize: number
     iterations: number

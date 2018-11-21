@@ -2,26 +2,7 @@
 
 import { WordArray } from './WordArray'
 import { BufferedBlockAlgorithm } from './BufferedBlockAlgorithm'
-
-function FF(a, b, c, d, x, s, t) {
-    let n = a + ((b & c) | (~b & d)) + x + t
-    return ((n << s) | (n >>> (32 - s))) + b
-}
-
-function GG(a, b, c, d, x, s, t) {
-    let n = a + ((b & d) | (c & ~d)) + x + t
-    return ((n << s) | (n >>> (32 - s))) + b
-}
-
-function HH(a, b, c, d, x, s, t) {
-    let n = a + (b ^ c ^ d) + x + t
-    return ((n << s) | (n >>> (32 - s))) + b
-}
-
-function II(a, b, c, d, x, s, t) {
-    let n = a + (c ^ (b | ~d)) + x + t
-    return ((n << s) | (n >>> (32 - s))) + b
-}
+import { FF, GG, HH, II } from './MD5Utils'
 
 // Constants table
 let T: number[] = []
@@ -36,7 +17,7 @@ for (let i = 0; i < 64; i++) {
 export class MD5 {
     private _hash: any
     constructor(private buffer: BufferedBlockAlgorithm) {}
-    public _doReset() {
+    public doReset() {
         this._hash = new WordArray([
             0x67452301,
             0xefcdab89,
@@ -45,7 +26,7 @@ export class MD5 {
         ])
     }
 
-    public _doProcessBlock(M, offset) {
+    public doProcessBlock(M: number[], offset: number) {
         // Swap endian
         for (let i = 0; i < 16; i++) {
             // Shortcuts
@@ -159,7 +140,7 @@ export class MD5 {
         H[3] = (H[3] + d) | 0
     }
 
-    public _doFinalize() {
+    public doFinalize() {
         // Shortcuts
         let data = this.buffer._data
         let dataWords = data.words
@@ -182,7 +163,7 @@ export class MD5 {
         data.sigBytes = (dataWords.length + 1) * 4
 
         // Hash final blocks
-        this.buffer._process(false, this._doProcessBlock)
+        this.buffer.process(false, this.doProcessBlock)
 
         // Shortcuts
         let hash = this._hash

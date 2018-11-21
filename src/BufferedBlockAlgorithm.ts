@@ -8,7 +8,7 @@ import { WordArray } from './WordArray'
  * @property {number} _minBufferSize The number of blocks that should be kept unprocessed in the buffer. Default: 0
  */
 export class BufferedBlockAlgorithm {
-    public _data: any
+    public _data: WordArray
     public blockSize: any
     public _nDataBytes: number
     /**
@@ -34,7 +34,7 @@ export class BufferedBlockAlgorithm {
      *     bufferedBlockAlgorithm._append('data');
      *     bufferedBlockAlgorithm._append(wordArray);
      */
-    public _append(data: WordArray) {
+    public append(data: WordArray) {
         // Convert string to WordArray, else assume WordArray already
         // if (typeof data === 'string') {
         //     data = Utf8.parse(data)
@@ -59,7 +59,7 @@ export class BufferedBlockAlgorithm {
      *     let processedData = bufferedBlockAlgorithm._process();
      *     let processedData = bufferedBlockAlgorithm._process(!!'flush');
      */
-    public _process(doFlush: boolean, _doProcessBlock: any) {
+    public process(doFlush: boolean, doProcessBlock: (M: number[], offset: number) => void) {
         let processedWords
 
         // Shortcuts
@@ -91,7 +91,7 @@ export class BufferedBlockAlgorithm {
         if (nWordsReady) {
             for (let offset = 0; offset < nWordsReady; offset += blockSize) {
                 // Perform concrete-algorithm logic
-                _doProcessBlock(dataWords, offset)
+                doProcessBlock(dataWords, offset)
             }
 
             // Remove processed words

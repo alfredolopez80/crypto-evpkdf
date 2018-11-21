@@ -1,8 +1,6 @@
 // tslint:disable:no-bitwise
 import { Hex } from './Hex'
 
-// From https://github.com/brix/crypto-js/blob/89ce2460ab1a10cdd0cefb686966414ce6a2ee6e/src/core.js
-
 /**
  * An array of 32-bit words.
  *
@@ -10,8 +8,8 @@ import { Hex } from './Hex'
  * @property {number} sigBytes The number of significant bytes in this word array.
  */
 export class WordArray {
-    public words: any
-    public sigBytes: any
+    public words: number[]
+    public sigBytes: number
     /**
      * Initializes a newly created word array.
      *
@@ -58,11 +56,8 @@ export class WordArray {
      *
      * @return {WordArray} This word array.
      *
-     * @example
-     *
-     *     wordArray1.concat(wordArray2);
      */
-    public concat(wordArray) {
+    public concat(wordArray: WordArray) {
         // Shortcuts
         const thisWords = this.words
         const thatWords = wordArray.words
@@ -139,7 +134,7 @@ export class WordArray {
      *
      *     const wordArray = CryptoJS.lib.WordArray.random(16);
      */
-    public random(nBytes) {
+    public static random(nBytes) {
         const words = []
 
         const r = function(input) {
