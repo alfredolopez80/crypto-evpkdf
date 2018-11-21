@@ -45,7 +45,7 @@ export class WordArray {
      *     const string = wordArray.toString();
      *     const string = wordArray.toString(CryptoJS.enc.Utf8);
      */
-    public toString(encoder) {
+    public toString(encoder?) {
         return (encoder || Hex).stringify(this)
     }
 

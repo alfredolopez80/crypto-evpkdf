@@ -38,8 +38,7 @@ export class Hasher {
      */
     public reset() {
         // Reset data buffer
-        this.reset.call(this)
-
+        this.buffer.reset()
         // Perform concrete-hasher logic
         this.md5.doReset()
     }

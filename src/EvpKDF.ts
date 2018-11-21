@@ -4,9 +4,9 @@ import { BufferedBlockAlgorithm } from './BufferedBlockAlgorithm'
 
 export interface IEvpKDFConfig {
     keySize: number
-    iterations: number
+    iterations?: number
 }
-export function EvpKDF(
+export function createEvpKDF(
     password: string,
     salt: string,
     config: IEvpKDFConfig = { keySize: 128 / 32, iterations: 1 }
@@ -22,7 +22,6 @@ export function EvpKDF(
     let derivedKeyWords = derivedKey.words
     let keySize = config.keySize
     let iterations = config.iterations
-
     // Generate key
     while (derivedKeyWords.length < keySize) {
         if (block) {
@@ -42,4 +41,20 @@ export function EvpKDF(
     derivedKey.sigBytes = keySize * 4
 
     return derivedKey
+}
+
+export function deriveKeyIVFromPassword(password: string, keySize: number, ivSize: number, salt: any) {
+    // Generate random salt
+    if (!salt) {
+        salt = WordArray.random(64 / 8)
+    }
+
+    // Derive key and IV
+    var key = createEvpKDF(password, salt, { keySize: keySize + ivSize })
+    // Separate key and IV
+    var iv = new WordArray(key.words.slice(keySize), ivSize * 4)
+    key.sigBytes = keySize * 4
+
+    // Return params
+    return { key: key, iv: iv, salt: salt }
 }

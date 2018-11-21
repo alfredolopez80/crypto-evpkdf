@@ -23,6 +23,19 @@ export class BufferedBlockAlgorithm {
         this._data = new WordArray()
         this._nDataBytes = 0
     }
+    private _parse(latin1Str) {
+        // Shortcut
+        var latin1StrLength = latin1Str.length
+
+        // Convert
+        var words = []
+        for (var i = 0; i < latin1StrLength; i++) {
+            words[i >>> 2] |=
+                (latin1Str.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8)
+        }
+
+        return new WordArray(words, latin1StrLength)
+    }
 
     /**
      * Adds new data to this block algorithm's buffer.
@@ -34,11 +47,11 @@ export class BufferedBlockAlgorithm {
      *     bufferedBlockAlgorithm._append('data');
      *     bufferedBlockAlgorithm._append(wordArray);
      */
-    public append(data: WordArray) {
+    public append(data: WordArray | string) {
         // Convert string to WordArray, else assume WordArray already
-        // if (typeof data === 'string') {
-        //     data = Utf8.parse(data)
-        // }
+        if (typeof data === 'string') {
+            data = this._parse(unescape(encodeURIComponent(data)))
+        }
 
         // Append
         this._data.concat(data)
@@ -59,7 +72,10 @@ export class BufferedBlockAlgorithm {
      *     let processedData = bufferedBlockAlgorithm._process();
      *     let processedData = bufferedBlockAlgorithm._process(!!'flush');
      */
-    public process(doFlush: boolean, doProcessBlock: (M: number[], offset: number) => void) {
+    public process(
+        doFlush: boolean,
+        doProcessBlock: (M: number[], offset: number) => void
+    ) {
         let processedWords
 
         // Shortcuts
