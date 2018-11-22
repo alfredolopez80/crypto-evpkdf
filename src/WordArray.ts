@@ -24,7 +24,6 @@ export class WordArray {
      */
     constructor(words?: number[], sigBytes?: number) {
         words = this.words = words || []
-console.log(words.length, sigBytes)
         if (sigBytes !== undefined) {
             this.sigBytes = sigBytes
         } else {

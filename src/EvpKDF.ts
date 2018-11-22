@@ -16,7 +16,6 @@ export function createEvpKDF(
     const hasher: Hasher = new Hasher(buffer)
 
     // Initial values
-    console.log('new derived key')
     let derivedKey: WordArray = new WordArray()
 
     // Shortcuts
@@ -29,16 +28,12 @@ export function createEvpKDF(
         if (block) {
             hasher.update(block)
         }
-        console.log('hash update')
         block = hasher.update(password).finalize(salt)
-        console.log('hash reset')
         hasher.reset()
 
         // Iterations
         for (let i = 1; i < iterations; i++) {
-            console.log('hash finalize')
             block = hasher.finalize(block)
-            console.log('hash reset')
             hasher.reset()
         }
 

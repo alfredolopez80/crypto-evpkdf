@@ -46,7 +46,7 @@ describe('EvpKDF', () => {
         it('should return key, iv and salt', async () => {
             const keySize = 256 / 32
             const ivSize = 128 / 32
-            const salt = WordArray.random(64 / 8)
+            const salt = new WordArray([0x1212121212])
             const wordArray = deriveKeyIVFromPassword(
                 'a very long password',
                 keySize,
@@ -59,18 +59,21 @@ describe('EvpKDF', () => {
                 ivSize,
                 salt,
             )
-            // const derivedParams2 = CryptoJS.kdf.OpenSSL.execute(
-            //     'a very long password',
-            //     keySize,
-            //     ivSize,
-            //     salt,
-            // )
+            const key = deriveKeyIVFromPassword(
+                'password',
+                (256+128)/32,
+                ivSize,
+                'saltsalt',
+            ).key
+
+            expect('fdbdf3419fff98bdb0241390f62a9db35f4aba29d77566377997314ebfc709f20b5ca7b1081f94b1ac12e3c8ba87d05a').toBe(key.toString());
 
 
-            expect(wordArray.key.sigBytes).toBe(derivedParams.key.sigBytes)
-            expect(wordArray.iv.words).toBe(derivedParams.iv.words)
-            expect(wordArray.salt.words).toBe(derivedParams.salt.words)
-            //expect(derivedParams.key.words).toBe(derivedParams2.key.words)
+            const password = new WordArray([0x12345678])
+
+            const expectedPass = password.toString()
+            expect(expectedPass).toBe(password.toString())
+            expect(wordArray.key.words).toEqual(derivedParams.key.words)
         })
     })
 })

@@ -1,4 +1,5 @@
 import { WordArray } from './WordArray'
+import { MD5 } from './MD5Hasher';
 
 /**
  * Abstract buffered block algorithm template.
@@ -10,6 +11,7 @@ import { WordArray } from './WordArray'
 export class BufferedBlockAlgorithm {
     public _data: WordArray
     public _nDataBytes: number
+    public _minBufferSize: number = 0
 
 
     constructor(public blockSize: number = 512 / 32){}
@@ -28,7 +30,6 @@ export class BufferedBlockAlgorithm {
     private _parse(latin1Str) {
         // Shortcut
         let latin1StrLength = latin1Str.length
-console.log(`latin1StrLength`, latin1Str)
         // Convert
         let words = []
         for (let i = 0; i < latin1StrLength; i++) {
@@ -54,7 +55,6 @@ console.log(`latin1StrLength`, latin1Str)
         if (typeof data === 'string') {
             data = this._parse(unescape(encodeURIComponent(data)))
         }
-console.log(data.sigBytes)
         // Append
         this._data.concat(data)
         this._nDataBytes += data.sigBytes
@@ -76,7 +76,7 @@ console.log(data.sigBytes)
      */
     public process(
         doFlush: boolean,
-        doProcessBlock: (M: number[], offset: number) => void
+        hasher: MD5
     ) {
         let processedWords
 
@@ -88,7 +88,6 @@ console.log(data.sigBytes)
         let blockSizeBytes = blockSize * 4
         // Count blocks ready
         let nBlocksReady = dataSigBytes / blockSizeBytes
-        console.log(doFlush, dataSigBytes, blockSize, blockSizeBytes)
 
         if (doFlush) {
             // Round up to include partial blocks
@@ -100,18 +99,16 @@ console.log(data.sigBytes)
             nBlocksReady = Math.max((nBlocksReady | 0) - this._minBufferSize, 0)
         }
 
-        console.log(nBlocksReady, blockSize)
         // Count words ready
         let nWordsReady = nBlocksReady * blockSize
 
         // Count bytes ready
         let nBytesReady = Math.min(nWordsReady * 4, dataSigBytes)
-        console.log(nWordsReady)
         // Process blocks
         if (nWordsReady) {
             for (let offset = 0; offset < nWordsReady; offset += blockSize) {
                 // Perform concrete-algorithm logic
-                doProcessBlock(dataWords, offset)
+                hasher.doProcessBlock(dataWords, offset)
             }
 
             // Remove processed words
@@ -123,5 +120,4 @@ console.log(data.sigBytes)
         return new WordArray(processedWords, nBytesReady)
     }
 
-    public _minBufferSize: 0
 }

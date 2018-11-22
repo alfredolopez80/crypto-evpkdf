@@ -59,9 +59,8 @@ export class Hasher {
         // Append
         this.buffer.append(messageUpdate)
 
-        console.log('update.append', this.buffer._data)
         // Update the hash
-        this.buffer.process(false, this.md5.doProcessBlock)
+        this.buffer.process(false, this.md5)
 
         // Chainable
         return this

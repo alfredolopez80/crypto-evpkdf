@@ -18,7 +18,6 @@ export class MD5 {
     private _hash: any
     constructor(private buffer: BufferedBlockAlgorithm) {}
     public doReset() {
-        console.log(`doReset`)
         this._hash = new WordArray([
             0x67452301,
             0xefcdab89,
@@ -28,7 +27,6 @@ export class MD5 {
     }
 
     public doProcessBlock(M: number[], offset: number) {
-        console.log(`doProcessBLock`)
         // Swap endian
         for (let i = 0; i < 16; i++) {
             // Shortcuts
@@ -143,7 +141,6 @@ export class MD5 {
     }
 
     public doFinalize() {
-        console.log('doFinalize')
         // Shortcuts
         let data = this.buffer._data
         let dataWords = data.words
@@ -164,9 +161,8 @@ export class MD5 {
             (((nBitsTotalL << 24) | (nBitsTotalL >>> 8)) & 0xff00ff00)
 
         data.sigBytes = (dataWords.length + 1) * 4
-        console.log('call doProcessBlock')
         // Hash final blocks
-        this.buffer.process(false, this.doProcessBlock)
+        this.buffer.process(false, this)
 
         // Shortcuts
         let hash = this._hash
