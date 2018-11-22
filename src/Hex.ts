@@ -7,13 +7,13 @@ import { WordArray } from './WordArray'
 export class Hex {
     public static stringify(wordArray) {
         // Shortcuts
-        var words = wordArray.words;
-        var sigBytes = wordArray.sigBytes;
+        let words = wordArray.words;
+        let sigBytes = wordArray.sigBytes;
 
         // Convert
-        var hexChars = [];
-        for (var i = 0; i < sigBytes; i++) {
-            var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+        let hexChars = [];
+        for (let i = 0; i < sigBytes; i++) {
+            let bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
             hexChars.push((bite >>> 4).toString(16));
             hexChars.push((bite & 0x0f).toString(16));
         }
@@ -32,15 +32,15 @@ export class Hex {
      *
      * @example
      *
-     *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
+     *     let wordArray = CryptoJS.enc.Hex.parse(hexString);
      */
     public static parse(hexStr) {
         // Shortcut
-        var hexStrLength = hexStr.length;
+        let hexStrLength = hexStr.length;
 
         // Convert
-        var words = [];
-        for (var i = 0; i < hexStrLength; i += 2) {
+        let words = [];
+        for (let i = 0; i < hexStrLength; i += 2) {
             words[i >>> 3] |= parseInt(hexStr.substr(i, 2), 16) << (24 - (i % 8) * 4);
         }
 

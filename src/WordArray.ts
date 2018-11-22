@@ -104,21 +104,7 @@ export class WordArray {
         words.length = Math.ceil(sigBytes / 4)
     }
 
-    // /**
-    //  * Creates a copy of this word array.
-    //  *
-    //  * @return {WordArray} The clone.
-    //  *
-    //  * @example
-    //  *
-    //  *     const clone = wordArray.clone();
-    //  */
-    // public clone() {
-    //     const clone = Base.clone.call(this)
-    //     clone.words = this.words.slice(0)
 
-    //     return clone
-    // }
 
     /**
      * Creates a word array filled with random bytes.
