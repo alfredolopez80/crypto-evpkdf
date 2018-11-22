@@ -9,8 +9,10 @@ import { WordArray } from './WordArray'
  */
 export class BufferedBlockAlgorithm {
     public _data: WordArray
-    public blockSize: any
     public _nDataBytes: number
+
+
+    constructor(public blockSize: number = 512 / 32){}
     /**
      * Resets this block algorithm's data buffer to its initial state.
      *
@@ -25,11 +27,11 @@ export class BufferedBlockAlgorithm {
     }
     private _parse(latin1Str) {
         // Shortcut
-        var latin1StrLength = latin1Str.length
-
+        let latin1StrLength = latin1Str.length
+console.log(`latin1StrLength`, latin1Str)
         // Convert
-        var words = []
-        for (var i = 0; i < latin1StrLength; i++) {
+        let words = []
+        for (let i = 0; i < latin1StrLength; i++) {
             words[i >>> 2] |=
                 (latin1Str.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8)
         }
@@ -52,7 +54,7 @@ export class BufferedBlockAlgorithm {
         if (typeof data === 'string') {
             data = this._parse(unescape(encodeURIComponent(data)))
         }
-
+console.log(data.sigBytes)
         // Append
         this._data.concat(data)
         this._nDataBytes += data.sigBytes
@@ -84,9 +86,10 @@ export class BufferedBlockAlgorithm {
         let dataSigBytes = data.sigBytes
         let blockSize = this.blockSize
         let blockSizeBytes = blockSize * 4
-
         // Count blocks ready
         let nBlocksReady = dataSigBytes / blockSizeBytes
+        console.log(doFlush, dataSigBytes, blockSize, blockSizeBytes)
+
         if (doFlush) {
             // Round up to include partial blocks
             nBlocksReady = Math.ceil(nBlocksReady)
@@ -97,12 +100,13 @@ export class BufferedBlockAlgorithm {
             nBlocksReady = Math.max((nBlocksReady | 0) - this._minBufferSize, 0)
         }
 
+        console.log(nBlocksReady, blockSize)
         // Count words ready
         let nWordsReady = nBlocksReady * blockSize
 
         // Count bytes ready
         let nBytesReady = Math.min(nWordsReady * 4, dataSigBytes)
-
+        console.log(nWordsReady)
         // Process blocks
         if (nWordsReady) {
             for (let offset = 0; offset < nWordsReady; offset += blockSize) {

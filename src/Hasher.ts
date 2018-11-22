@@ -12,7 +12,7 @@ export class Hasher {
      */
 
     private md5: MD5
-    public blockSize: number = 512 / 32
+    
 
     /**
      * Initializes a newly created hasher.
@@ -38,7 +38,7 @@ export class Hasher {
      */
     public reset() {
         // Reset data buffer
-        this.buffer.reset()
+        this.buffer.reset() // call
         // Perform concrete-hasher logic
         this.md5.doReset()
     }
@@ -59,6 +59,7 @@ export class Hasher {
         // Append
         this.buffer.append(messageUpdate)
 
+        console.log('update.append', this.buffer._data)
         // Update the hash
         this.buffer.process(false, this.md5.doProcessBlock)
 
