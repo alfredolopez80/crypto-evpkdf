@@ -92,41 +92,4 @@ export class Hasher {
         return hash
     }
 
-    // /**
-    //  * Creates a shortcut function to a hasher's object interface.
-    //  *
-    //  * @param {Hasher} hasher The hasher to create a helper for.
-    //  *
-    //  * @return {Function} The shortcut function.
-    //  *
-    //  * @static
-    //  *
-    //  * @example
-    //  *
-    //  *     var SHA256 = CryptoJS.lib.Hasher._createHelper(CryptoJS.algo.SHA256);
-    //  */
-    // public _createHelper(hasher) {
-    //     return function(message, cfg) {
-    //         return new hasher.init(cfg).finalize(message)
-    //     }
-    // }
-
-    // /**
-    //  * Creates a shortcut function to the HMAC's object interface.
-    //  *
-    //  * @param {Hasher} hasher The hasher to use in this HMAC helper.
-    //  *
-    //  * @return {Function} The shortcut function.
-    //  *
-    //  * @static
-    //  *
-    //  * @example
-    //  *
-    //  *     var HmacSHA256 = CryptoJS.lib.Hasher._createHmacHelper(CryptoJS.algo.SHA256);
-    //  */
-    // public _createHmacHelper(hasher) {
-    //     return function(message, key) {
-    //         return new C_algo.HMAC.init(hasher, key).finalize(message)
-    //     }
-    // }
 }
