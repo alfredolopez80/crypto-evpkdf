@@ -1,7 +1,7 @@
 {
-  "name": "crypto-evpkdf",
+  "name": "@decent-bet/crypto-evpkdf",
   "version": "1.0.0",
-  "description": "",
+  "description": "Extracted EVP KDF module from CryptoJS",
   "main": "lib/index.js",
   "scripts": {
     "start:ts": "ts-node src/index.ts",
@@ -9,8 +9,18 @@
     "start": "npm run build:live",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Rogelio Morrel <rogelio@decent.bet>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:decent-bet/crypto-evpkdf.git"
+  },
+  "homepage": "https://github.com/decent-bet/crypto-evpkdf",
+  "keywords": [
+    "decent-bet",
+    "crypto-js",
+    "evpkdf"
+  ],
   "devDependencies": {
     "@types/jest": "^23.3.1",
     "@types/node": "^10.5.5",
