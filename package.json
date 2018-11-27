@@ -1,6 +1,6 @@
 {
   "name": "@decent-bet/crypto-evpkdf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extracted EVP KDF module from CryptoJS",
   "main": "lib/index.js",
   "scripts": {
