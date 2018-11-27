@@ -14,7 +14,7 @@ export class WebcryptoNodeUtils {
             ivSize,
             salt
         )
-
+        console.log(`password based: ${JSON.stringify(wordArray)}`)
         return wordArray.iv
     }
     /**
