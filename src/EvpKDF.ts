@@ -52,10 +52,11 @@ export function deriveKeyIVFromPassword(password: string, keySize: number, ivSiz
 
     // Derive key and IV
     var key = createEvpKDF(password, salt, { keySize: keySize + ivSize })
+    // console.log(`deriveKeyFromIV ${key}`)
     // Separate key and IV
     var iv = new WordArray(key.words.slice(keySize), ivSize * 4)
     key.sigBytes = keySize * 4
-
+    // console.log(`deriveKeyFromIV ${keySize}, ${key.sigBytes}`)
     // Return params
     return { key: key, iv: iv, salt: salt }
 }
