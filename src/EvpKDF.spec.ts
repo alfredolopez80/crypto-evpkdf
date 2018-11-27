@@ -1,46 +1,23 @@
 const CryptoJS = require('crypto-js')
 
+import { TextDecoder } from 'util'
+import { WebcryptoNodeUtils } from './WebcryptoNodeUtils'
 import { deriveKeyIVFromPassword } from './EvpKDF'
 import { WordArray } from './WordArray';
 describe('EvpKDF', () => {
     describe('#getEvpKDF()', () => {
-        xit('should return key, iv and salt', async () => {
-            const keySize = 256 / 32
-            const ivSize = 128 / 32
-            const wordArray = deriveKeyIVFromPassword(
-                'a very long password........',
-                keySize,
-                ivSize,
-                null
-            )
+        it('should encrypt and decrypt with AES CBC webcrypto polyfill', async () => {
+            const password = 'password'
+            const data = 'Hola Mundo'
 
-            const expectedResult = {
-                iv: {
-                    sigBytes: 16,
-                    words: [19088743, -1985229329, -19088744, 1985229328]
-                },
-                key: {
-                    sigBytes: 32,
-                    words: [
-                        19088743,
-                        -1985229329,
-                        -19088744,
-                        1985229328,
-                        19088743,
-                        -1985229329,
-                        -19088744,
-                        1985229328,
-                        19088743,
-                        -1985229329,
-                        -19088744,
-                        1985229328
-                    ]
-                },
-                salt: { sigBytes: 8, words: [-1600982938, 1452500692] }
-            }
-            expect(wordArray.iv.words).toEqual(expectedResult.iv.words)
-            expect(wordArray.key.words).toEqual(expectedResult.key.words)
-            expect(wordArray.salt.words).not.toEqual(expectedResult.salt.words)
+            const key = await WebcryptoNodeUtils.importKey_AESCBC(password)
+            
+            const encrypted: ArrayBuffer = await WebcryptoNodeUtils.encryptAES(key.key, key.ivArr, data)
+            const decrypted = await WebcryptoNodeUtils.decryptAES(key.key, key.ivArr, encrypted)
+
+            const a = (new TextDecoder()).decode(decrypted)
+            console.log(a)
+            expect(data).toBe(a)
         })
 
         it('should return key, iv and salt', async () => {
